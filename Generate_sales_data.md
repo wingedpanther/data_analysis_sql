@@ -8,7 +8,7 @@ I had one task to create a Business Intelligence proof of concept for a client, 
 ## Here is the select statement I've used
 
 ```
-	SELECT
+  SELECT
         floor(RANDOM()*(1000-100)+100) AS id,
         generate_series('2018-01-01'::date, '2020-12-31'::date, '1 day'::interval)::date sales_date,
         (ARRAY['Riyadh','Jeddah','Dammam','Taif','Madina'])[floor(RANDOM()*5)+1] region,
@@ -21,7 +21,7 @@ I had one task to create a Business Intelligence proof of concept for a client, 
         (ARRAY['Visa','Mastercard','American Express','Discover','Paypal','Cash'])[floor(RANDOM()*6)+1] payment_method,
         (ARRAY['New customer','Returning customer'])[floor(RANDOM()*2)+1] customer_type,
         (ARRAY['Saudi Arabia','United Arab Emirates','Qatar','Bahrain','Oman','Kuwait'])[floor(RANDOM()*6)+1] country
-	FROM 
+  FROM 
         GENERATE_SERIES(1, 10000);
 ```
 <p>
@@ -55,4 +55,5 @@ SELECT
 
 ```
 
-image.png
+![qry](https://user-images.githubusercontent.com/15865285/231485244-5cf21e21-b68a-4d57-bfae-5db9534ce360.png)
+
