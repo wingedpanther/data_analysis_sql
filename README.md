@@ -163,7 +163,7 @@ WHERE medal IS NOT NULL
 GROUP BY noc, year;
 ```
 
-## Predict the likelihood of winning a medal based on age, height, weight, and sport using logistic regression
+### Predict the likelihood of winning a medal based on age, height, weight, and sport using logistic regression
 
 ```
 SELECT age, height, weight, sport, 
