@@ -50,26 +50,29 @@ WHERE id IS NULL OR name IS NULL OR sex IS NULL OR age IS NULL
 
 ### Checking duplicates and removing them
 
-### Checking the missing values aka null rows
 ```
-SELECT COUNT(*) 
-FROM OLYMPICS_HISTORY 
-WHERE id IS NULL OR name IS NULL OR sex IS NULL OR age IS NULL 
-    OR height IS NULL OR weight IS NULL OR team IS NULL 
-    OR noc IS NULL OR games IS NULL OR year IS NULL 
-    OR season IS NULL OR city IS NULL OR sport IS NULL 
-    OR event IS NULL OR medal IS NULL;
+SELECT COUNT(*) duplicate_rows
+FROM (
+    SELECT id, name, sex, age, height, weight, team, noc, games, year, season, city, sport, event, medal, 
+        ROW_NUMBER() OVER (PARTITION BY id, name, sex, age, height, weight, team, noc, games, year, season, city, sport, event, medal ORDER BY id) AS rn
+    FROM OLYMPICS_HISTORY
+) sub
+WHERE rn > 1;
 
 ```
 ### Deleting the duplicate rows
 ```
-SELECT COUNT(*) 
-FROM OLYMPICS_HISTORY 
-WHERE id IS NULL OR name IS NULL OR sex IS NULL OR age IS NULL 
-    OR height IS NULL OR weight IS NULL OR team IS NULL 
-    OR noc IS NULL OR games IS NULL OR year IS NULL 
-    OR season IS NULL OR city IS NULL OR sport IS NULL 
-    OR event IS NULL OR medal IS NULL;
+DELETE FROM OLYMPICS_HISTORY 
+WHERE id IN (
+    SELECT id
+    FROM (
+        SELECT id, name, sex, age, height, weight, team, noc, games, year, season, city, sport, event, medal, 
+            ROW_NUMBER() OVER (PARTITION BY id, name, sex, age, height, weight, team, noc, games, year, season, city, sport, event, medal ORDER BY id) AS rn
+        FROM OLYMPICS_HISTORY
+    ) sub
+    WHERE rn > 1
+);
+
 
 ```
 
@@ -95,4 +98,57 @@ GROUP BY noc
 ORDER BY num_medals DESC limit 10;
 
 ```
+## Basic Statistics
 
+### Finding the average age of male and female athletes
+
+```
+SELECT sex, round(AVG(age::int)) AS avg_age
+FROM OLYMPICS_HISTORY
+where age <> 'NA'
+GROUP BY sex;
+```
+
+### Finding the standard deviation of height and weigh
+```
+SELECT STDDEV(height::numeric) AS sd_height, STDDEV(weight::numeric) AS sd_weight
+FROM OLYMPICS_HISTORY
+where height <> 'NA' and weight <> 'NA';
+```
+
+## Data Vizualization
+
+*Note: I have used metabase to vizualize the data*
+### Age distribution
+```
+SELECT age, COUNT(*) AS num_athletes
+FROM OLYMPICS_HISTORY
+WHERE age IS NOT NULL
+GROUP BY age
+ORDER BY age;
+```
+
+```
+SELECT height, weight
+FROM OLYMPICS_HISTORY
+WHERE height IS NOT NULL AND weight IS NOT NULL;
+```
+
+## Hypothesis Analysis
+### To find if there is a significant difference in the average age of medalists and non-medalists
+
+*The actual data stored Age as text, you can cast the Age in runtime or make chnages to the entire column. I have used the former*
+```
+SELECT medal, round(AVG(age::int)) AS avg_age, COUNT(*) AS num_athletes
+FROM OLYMPICS_HISTORY
+WHERE age IS NOT NULL and age <> 'NA'
+GROUP BY medal;
+```
+### To find if there is a significant difference in the average height of male and female athletes
+
+```
+SELECT sex, AVG(height::numeric) AS avg_height, COUNT(*) AS num_athletes
+FROM OLYMPICS_HISTORY
+WHERE height IS NOT NULL and height <> 'NA'
+GROUP BY sex;
+```
