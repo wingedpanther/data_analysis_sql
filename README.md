@@ -152,3 +152,22 @@ FROM OLYMPICS_HISTORY
 WHERE height IS NOT NULL and height <> 'NA'
 GROUP BY sex;
 ```
+
+### Time series
+### Number of medals won by country over time
+
+```
+SELECT noc, year, COUNT(*) AS count_medals
+FROM olympics_history
+WHERE medal IS NOT NULL
+GROUP BY noc, year;
+```
+
+## Predict the likelihood of winning a medal based on age, height, weight, and sport using logistic regression
+
+```
+SELECT age, height, weight, sport, 
+       CASE WHEN medal IS NOT NULL THEN 1 ELSE 0 END AS medal_won
+FROM olympics_history;
+
+```
