@@ -6,7 +6,7 @@ The data can be downloaded from [Kaggle](https://www.kaggle.com/heesoo37/120-yea
 
 To create a table in PostgreSQL and copy the downloaded data, use the following code:
 
-<code>
+```
 CREATE TABLE IF NOT EXISTS OLYMPICS_HISTORY
 (
     id          INT,
@@ -26,4 +26,4 @@ CREATE TABLE IF NOT EXISTS OLYMPICS_HISTORY
     medal       VARCHAR
 );
 
-</code>
+```
