@@ -25,9 +25,9 @@ I had one task to create a Business Intelligence proof of concept for a client, 
         GENERATE_SERIES(1, 10000);
 ```
 <p>
-    - This select statement will generate 10960000 rows. 
-    - It took me around 1 and half minutes to complete the query.  
-    -  *GENERATE_SERIES(1, 10000);* you can increase or decrease the number of values by modifying values here
+  - This select statement will generate 10960000 rows. 
+  - It took me around 1 and half minutes to complete the query.  
+  -  *GENERATE_SERIES(1, 10000);* you can increase or decrease the number of values by modifying values here
 </p>
 
 ## It is better to create a table using the above select statement
