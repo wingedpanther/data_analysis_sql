@@ -34,7 +34,7 @@ I had one task to create a Business Intelligence proof of concept for a client, 
 
 ```
 DROP TABLE IF EXISTS sales_data_001;
-CREATE TABLE sales_data AS  -- creates new table on the go from the select statement 
+CREATE TABLE sales_data_001 AS  -- creates new table on the go from the select statement 
 SELECT
         floor(RANDOM()*(1000-100)+100) AS id,
         generate_series('2018-01-01'::date, '2020-12-31'::date, '1 day'::interval)::date sales_date,
